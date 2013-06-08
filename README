@@ -1,0 +1,96 @@
+NAME
+    App::Garmin::AutoImport - Import data from a Garmin device
+
+VERSION
+    0.90
+
+DESCRIPTION
+    The "garmin-autoimport" application is used to import data from a Garmin
+    device such as the Forerunner 305, but will work with any other Garmin
+    device supported by garmin-forerunner-tools
+    <https://launchpad.net/ubuntu/+source/garmin-forerunner-tools>.
+
+    The application is supposed to be autostarted in a destop environment
+    (such as Ubuntu <http://ubuntu.com>). It will then detect when a Garmin
+    device is connected and start downloading new track logs from the device
+    and save them to "Documents/garmin" in the current user's home
+    directory.
+
+    This program can also be installed from a debian package. This is highly
+    suggested, since the Perl modules required to run this application might
+    be difficult to install, even with tools like cpanm.
+
+    The debian package can be found here:
+    <https://github.com/jhthorsen/app-garmin-autoimport/raw/master/dist/garm
+    in-autoimport_0.90_all.deb>
+
+SYNOPSIS
+      use App::Garmin::AutoImport;
+      exit App::Garmin::AutoImport->new->run;
+
+    Or use the "garmin-autoimport" application bundled to this package.
+
+ENVIRONMENT VARIABLES
+    *   NO_NOTIFICATIONS
+
+        Will not load Gtk2::Notify and will not send notifications to the
+        desktop environment.
+
+    *   GARMIN_ID_VENDOR
+
+        Set this if you got a Garmin device which does not have the USB
+        vendor ID "0x091e".
+
+ATTRIBUTES
+  id_product
+    Returns the USB ID of the Garmin product. Default is 0.
+
+  id_vendor
+    Returns the USB ID of the Garmin vendor. Default is the
+    "GARMIN_ID_VENDOR" "ENVIRONMENT" variable.
+
+METHODS
+  new
+      $self = $class->new(\%args);
+      $self = $class->new(%args);
+
+    Object constructor. %args can have:
+
+    *   id_product
+
+        Defaults to 0, which enable it to be set by "auto_detect_device".
+
+    *   id_vendor
+
+        Defaults to "GARMIN_ID_VENDOR".
+
+    *   output_dir
+
+        Defaults to "$ENV{HOME}/Documents/garmin".
+
+  auto_detect_device
+      $self->auto_detect_device;
+
+    This method starts by checking if a Garmin device is already connected.
+    If not found, it will check for a new device and use the first that is
+    found.
+
+    This method sets "id_product" and id_vendor.
+
+  notify
+      $self->notify($message);
+      $self->notify($title, $message);
+
+    Notify the user using Gtk2::Notify which sends popup notifictions to the
+    desktop environment.
+
+  run
+      $self->run;
+
+    Will run the application inside a never ending loop. Calls
+    "auto_detect_device" until "id_product" is detected and starts
+    "garmin_save_runs" once the Garmin device is connected.
+
+AUTHOR
+    Jan Henning Thorsen - "jhthorsen@cpan.org"
+

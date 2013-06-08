@@ -1,0 +1,6 @@
+Revision history for App-Garmin-AutoImport
+
+0.90     Sat Jun  8 14:19:42 2013
+       * Use garmin_save_runs to import data
+       * Use Gtk2::Notify to notify the user of new events
+       * Use Device::USB to autodetect Garmin device

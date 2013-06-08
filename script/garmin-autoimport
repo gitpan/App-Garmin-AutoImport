@@ -1,0 +1,4 @@
+#!/usr/bin/perl
+eval 'require App::Garmin::AutoImport; 1'
+    or die "Check https://github.com/jhthorsen/app-garmin-autoimport";
+exit App::Garmin::AutoImport->new->run;
